@@ -1,0 +1,29 @@
+{% extends "wrapper" %}
+{% block title %}Авторы{% endblock %}
+
+{% block content %}
+    <main>
+        <div class="container pt-5 text-center rounded overflow-hidden">
+            {% if not empty authors %}
+                {% for author in authors %}
+                    <div class="container">
+                        <div class="author mb-5">
+                            <div class="row">
+                                <div class="avatar col-2">
+                                    <img src="{{ fullUri(author.getAvatarPath()) }}" width="100%"
+                                         class="rounded float-left border-light bg-light "
+                                         alt="@supertux038_avatar">
+                                </div>
+                                <div class="author-name text-center col-10 pt-5">
+                                    <a href="${pageContext.request.contextPath}/user?id= {{ author.getId() }} ">
+                                        <h1>@{{ author.getNickname() }}</h1>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+    </main>
+{% endblock %}
