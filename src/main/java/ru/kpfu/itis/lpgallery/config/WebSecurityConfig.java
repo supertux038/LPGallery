@@ -27,25 +27,29 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-//        super.configure(http);
-//        http.csrf().disable();
 
         http
                 .authorizeRequests()
-                        .antMatchers("/css/**", "/img/**", "/js/**", "/user-data/**", "/signUp", "/main").permitAll()
-                        .antMatchers("/addModel").permitAll()
-                        .antMatchers("/").permitAll().anyRequest().authenticated()
+//                        .antMatchers("/css/**", "/img/**", "/js/**", "/user-data/**", "/signUp", "/main").permitAll()
+//                        .antMatchers("/addModel").permitAll()
+//                        .antMatchers("/authors").permitAll()
+//                        .antMatchers("/test-page").permitAll()
+//                        .antMatchers("/").permitAll()
+//                        .anyRequest().authenticated()
+                        .anyRequest().permitAll()
+                        .and()
+                .exceptionHandling()
+                        .accessDeniedPage("/accessDenied")
                         .and()
                 .formLogin()
                         .loginPage("/login")
-                        .usernameParameter("nickname")
-                        .passwordParameter("password")
                         .defaultSuccessUrl("/main")
                         .failureUrl("/login?error")
                         .permitAll()
                         .and()
                 .logout()
                         .permitAll()
+                        .logoutSuccessUrl("/main")
                         .and()
                 .csrf();
     }
@@ -60,4 +64,5 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
 }

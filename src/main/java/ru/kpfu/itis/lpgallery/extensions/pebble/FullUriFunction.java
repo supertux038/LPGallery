@@ -20,7 +20,7 @@ public class FullUriFunction implements Function {
     @Override
     public Object execute(Map<String, Object> map, PebbleTemplate pebbleTemplate, EvaluationContext evaluationContext,
                           int i) {
-        String input = (String)map.get("uri");
+        String input = (String)map.get("fullUri");
         StringBuilder fullUri = new StringBuilder(input);
         fullUri.insert(0, servletContext.getContextPath());
         return fullUri.toString();
@@ -28,6 +28,10 @@ public class FullUriFunction implements Function {
 
     @Override
     public List<String> getArgumentNames() {
-        return Arrays.asList("uri");
+//        return Arrays.asList("uri");
+        List<String> names = new ArrayList<>();
+        names.add("fullUri");
+        names.add("uri");
+        return names;
     }
 }

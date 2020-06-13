@@ -4,26 +4,89 @@
 {% block content %}
     <main>
         <div class="container pt-5 text-center rounded overflow-hidden">
-            {% if not empty authors %}
-                {% for author in authors %}
-                    <div class="container">
-                        <div class="author mb-5">
-                            <div class="row">
-                                <div class="avatar col-2">
-                                    <img src="{{ fullUri(author.getAvatarPath()) }}" width="100%"
-                                         class="rounded float-left border-light bg-light "
-                                         alt="@supertux038_avatar">
-                                </div>
-                                <div class="author-name text-center col-10 pt-5">
-                                    <a href="${pageContext.request.contextPath}/user?id= {{ author.getId() }} ">
-                                        <h1>@{{ author.getNickname() }}</h1>
-                                    </a>
+            {% if authors is empty %}
+                <div class="mb-5">
+                    <h1>Пользователей еще нет</h1>
+                </div>
+            {% else %}
+                <ul id="authors">
+                    {% for author in authors %}
+                        <li>
+                            <div class="container">
+                                <div class="author mb-5">
+                                    <div class="row">
+                                        <div class="avatar col-2">
+                                            <img src="{{ userAvatarUri( author.getAvatarPath() ) }}" width="100%"
+                                                 class="rounded float-left border-light bg-light "
+                                                 alt="@{{ author.getNickname() }}_avatar">
+                                        </div>
+                                        <div class="author-name text-center col-10 pt-4">
+{#                                            <a href="{{ fullUri("/user?id= {{ author.getId() }}") }}">#}
+                                                <h1>{{ author.getNickname() }}</h1>
+                                            </a>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                {% endfor %}
+                        </li>
+                    {% endfor %}
+                </ul>
             {% endif %}
         </div>
     </main>
+
+    <script>
+
+        let loading = false;
+        let page = 2;
+        console.log($(window).height());
+
+        $(window).on('scroll', function () {
+            let lastAuthor = $("li").last();
+            if (($(this).scrollTop() + $(window).height()) >= (lastAuthor.offset().top + 300) && !loading) {
+
+                console.log(lastAuthor.offset().top);
+                console.log($(this).scrollTop() + $(window).height() - lastAuthor.offset().top);
+                loadAuthors();
+            }
+        });
+
+        function loadAuthors() {
+            $.ajax({
+                url: "/test-page/next-group?page=" + page,
+                type: "get",
+                dataType: "text",
+                beforeSend: function () {
+                    loading = true;
+                },
+                success: function (authors) {
+                    console.log("success");
+                    $("#authors").append("" +
+                            "{% for author in authors %}\n" +
+                        "                        <li>\n" +
+                        "                            <div class=\"container\">\n" +
+                        "                                <div class=\"author mb-5\">\n" +
+                        "                                    <div class=\"row\">\n" +
+                        "                                        <div class=\"avatar col-2\">\n" +
+                        "                                            <img src=\"{{ userAvatarUri( author.getAvatarPath() ) }}\" width=\"100%\"\n" +
+                        "                                                 class=\"rounded float-left border-light bg-light \"\n" +
+                        "                                                 alt=\"@{{ author.getNickname() }}_avatar\">\n" +
+                        "                                        </div>\n" +
+                        "                                        <div class=\"author-name text-center col-10 pt-4\">\n" +
+                        "{#                                            <a href=\"{{ fullUri(\"/user?id= {{ author.getId() }}\") }}\">#}\n" +
+                        "                                                <h1>{{ author.getNickname() }}</h1>\n" +
+                        "                                            </a>\n" +
+                        "                                        </div>\n" +
+                        "                                    </div>\n" +
+                        "                                </div>\n" +
+                        "                            </div>\n" +
+                        "                        </li>\n" +
+                        "                    {% endfor %}"
+                    );
+                    loading = false;
+                }
+            })
+        }
+
+    </script>
 {% endblock %}

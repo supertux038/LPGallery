@@ -26,7 +26,7 @@
                         Запомнить меня
                     </label>
                 </div>
-                <input type="hidden" name="{{ _csrf.parameterName }}" value=" {{ _csrf.token }}">
+                <input type="hidden" name="_csrf" value=" {{ _csrf.token }}">
 
                 <a class="link mb-3" href="/signUp">У меня еще нет аккаунта</a>
 {#                <%--                <a data-toggle="modal" class="link mb-3" href="#sign-up" data-dismiss="modal">У меня еще нет аккаунта</a>--%>#}

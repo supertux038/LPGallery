@@ -22,13 +22,17 @@ public class PebbleViewResolverConfig {
     @Bean
     public PebbleViewResolver viewResolver() {
         PebbleViewResolver viewResolver = new PebbleViewResolver();
+        viewResolver.setPrefix("/");
+        viewResolver.setSuffix(".peb");
         viewResolver.setPebbleEngine(pebbleEngine());
         return viewResolver;
     }
 
     @Bean
     public PebbleEngine pebbleEngine(){
-        return new PebbleEngine.Builder().loader(pebbleTemplateLoader()).extension(pebbleExtension()).build();
+        return new PebbleEngine.Builder().extension(pebbleExtension()).build();
+//        return new PebbleEngine.Builder().loader(pebbleTemplateLoader()).extension(pebbleExtension()).build();
+//        return new PebbleEngine.Builder().build();
     }
 
     @Bean

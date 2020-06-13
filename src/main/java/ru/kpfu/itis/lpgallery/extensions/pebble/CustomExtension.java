@@ -16,7 +16,8 @@ public class CustomExtension extends SpringExtension implements BeanFactoryAware
     public Map<String, Function> getFunctions() {
         Map<String, Function> functions = super.getFunctions();
         functions.put("fullUri", beanFactory.getBean(FullUriFunction.class));
-        functions.put("userDataUri", beanFactory.getBean(FullUriFunction.class));
+        functions.put("userDataUri", beanFactory.getBean(UserDataUriFunction.class));
+        functions.put("userAvatarUri", beanFactory.getBean(UserAvatarUriFunction.class));
         return functions;
     }
 

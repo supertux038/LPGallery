@@ -1,0 +1,13 @@
+#Configuration:
+#    status: warn
+#    name: YAMLConfigTest
+#    appenders:
+#        JDBC:
+#            name: MyAppender
+#
+#
+#    Loggers:
+#        Root:
+#            level: warn
+#            AppenderRef:
+#                ref: MyAppender

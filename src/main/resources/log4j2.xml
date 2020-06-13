@@ -1,0 +1,11 @@
+<Configuration xmlns:xi="http://www.w3.org/2001/XInclude" packages="ru.kpfu.itis.lpgallery.handlers" status="WARN">
+    <Appenders>
+        <MyAppender name="MyAppender"/>
+    </Appenders>
+    <Loggers>
+        <Root level="WARN">
+            <AppenderRef ref="MyAppender"/>
+        </Root>
+    </Loggers>
+
+</Configuration>

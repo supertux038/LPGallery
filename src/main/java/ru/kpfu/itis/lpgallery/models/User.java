@@ -1,12 +1,14 @@
 package ru.kpfu.itis.lpgallery.models;
 
 import lombok.*;
+import org.hibernate.validator.constraints.Length;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -21,6 +23,7 @@ public class User implements UserDetails {
     private long id;
 
     @NotBlank
+    @Length(max = 16)
     @Column(nullable = false, unique = true)
     private String nickname;
 
@@ -30,8 +33,9 @@ public class User implements UserDetails {
     private String avatar_path = "default.png";
 
     @NotBlank
+    @Length(min = 8)
     @Column(nullable = false)
-    private String password;
+    private String hashPassword;
 
     @NotBlank
     @Transient
@@ -45,15 +49,20 @@ public class User implements UserDetails {
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
     @Enumerated(EnumType.STRING)
-    private Set<Role> roles;
+    private List<Role> roles;
 
-    @OneToMany()
-    @CollectionTable(name = "")
+    @OneToMany
+    @CollectionTable(name = "models")
     private Set<Model> models;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return null;
+    }
+
+    @Override
+    public String getPassword() {
+        return hashPassword;
     }
 
     @Override
@@ -79,5 +88,14 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public String getAvatarPath() {
+        return avatar_path;
+    }
+
+    public User(String nickname, String avatar_path) {
+        this.nickname = nickname;
+        this.avatar_path = avatar_path;
     }
 }
